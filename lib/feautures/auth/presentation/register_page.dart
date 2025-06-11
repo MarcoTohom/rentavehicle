@@ -54,7 +54,7 @@ class _RegisterPageState extends State<RegisterPage> {
         );
 
         // Redirigir o limpiar formulario
-        Navigator.of(context).pop();
+        Navigator.pushNamed(context, '/home');
 
       } on FirebaseAuthException catch (e) {
         String errorMsg = 'Ocurrió un error';
