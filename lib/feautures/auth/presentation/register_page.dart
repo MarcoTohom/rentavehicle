@@ -1,3 +1,4 @@
+import 'package:apps/model/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -33,19 +34,35 @@ class _RegisterPageState extends State<RegisterPage> {
       final password = _passwordController.text.trim();
 
       try {
-        // Registro con Firebase Auth
+        // Verificar si el DPI ya está registrado como ID de documento
+        final existingDoc = await _firestore.collection('users').doc(dpi).get();
+        if (existingDoc.exists) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('El DPI ya está registrado.')),
+          );
+          return;
+        }
+
+        // Crear usuario en Firebase Auth
         UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
           email: email,
           password: password,
         );
 
-        // Guardar en Firestore
-        await _firestore.collection('users').doc(userCredential.user!.uid).set({
-          'nombres': nombres,
-          'apellidos': apellidos,
-          'email': email,
-          'telefono': telefono,
-          'dpi': dpi,
+        // Crear instancia de UserModel
+        final newUser = UserModel(
+          id: userCredential.user!.uid,
+          nombres: nombres,
+          apellidos: apellidos,
+          correo: email,
+          telefono: telefono,
+          dpi: dpi,
+          contrasena: password,
+        );
+
+        // Guardar los datos en Firestore con el DPI como ID de documento
+        await _firestore.collection('users').doc(dpi).set({
+          ...newUser.toMap(),
           'createdAt': FieldValue.serverTimestamp(),
         });
 
@@ -53,7 +70,6 @@ class _RegisterPageState extends State<RegisterPage> {
           const SnackBar(content: Text('Registro exitoso')),
         );
 
-        // Redirigir o limpiar formulario
         Navigator.pushNamed(context, '/home');
 
       } on FirebaseAuthException catch (e) {
