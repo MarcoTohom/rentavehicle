@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -18,19 +20,54 @@ class _RegisterPageState extends State<RegisterPage> {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
-  void _register() {
-    if (_formKey.currentState!.validate()) {
-      // Aquí puedes procesar el registro
-      final nombres = _nombresController.text;
-      final apellidos = _apellidosController.text;
-      final email = _emailController.text;
-      final telefono = _telefonoController.text;
-      final dpi = _dpiController.text;
-      final password = _passwordController.text;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-      // Por ejemplo:
-      print('Registrando usuario: $nombres $apellidos ($email)');
-      // Aquí puedes conectar con Firebase o tu backend
+  Future<void> _register() async {
+    if (_formKey.currentState!.validate()) {
+      final nombres = _nombresController.text.trim();
+      final apellidos = _apellidosController.text.trim();
+      final email = _emailController.text.trim();
+      final telefono = _telefonoController.text.trim();
+      final dpi = _dpiController.text.trim();
+      final password = _passwordController.text.trim();
+
+      try {
+        // Registro con Firebase Auth
+        UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+
+        // Guardar en Firestore
+        await _firestore.collection('users').doc(userCredential.user!.uid).set({
+          'nombres': nombres,
+          'apellidos': apellidos,
+          'email': email,
+          'telefono': telefono,
+          'dpi': dpi,
+          'createdAt': FieldValue.serverTimestamp(),
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Registro exitoso')),
+        );
+
+        // Redirigir o limpiar formulario
+        Navigator.of(context).pop();
+
+      } on FirebaseAuthException catch (e) {
+        String errorMsg = 'Ocurrió un error';
+        if (e.code == 'email-already-in-use') {
+          errorMsg = 'El correo ya está en uso.';
+        } else if (e.code == 'weak-password') {
+          errorMsg = 'La contraseña es muy débil.';
+        }
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(errorMsg)),
+        );
+      }
     }
   }
 
@@ -65,22 +102,19 @@ class _RegisterPageState extends State<RegisterPage> {
                 controller: _telefonoController,
                 decoration: const InputDecoration(labelText: 'Teléfono'),
                 keyboardType: TextInputType.phone,
-                validator: (value) =>
-                value!.length < 8 ? 'Teléfono inválido' : null,
+                validator: (value) => value!.length < 8 ? 'Teléfono inválido' : null,
               ),
               TextFormField(
                 controller: _dpiController,
                 decoration: const InputDecoration(labelText: 'DPI'),
                 keyboardType: TextInputType.number,
-                validator: (value) =>
-                value!.length != 13 ? 'El DPI debe tener 13 dígitos' : null,
+                validator: (value) => value!.length != 13 ? 'El DPI debe tener 13 dígitos' : null,
               ),
               TextFormField(
                 controller: _passwordController,
                 decoration: const InputDecoration(labelText: 'Contraseña'),
                 obscureText: true,
-                validator: (value) =>
-                value!.length < 6 ? 'Mínimo 6 caracteres' : null,
+                validator: (value) => value!.length < 6 ? 'Mínimo 6 caracteres' : null,
               ),
               TextFormField(
                 controller: _confirmPasswordController,
