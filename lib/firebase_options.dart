@@ -3,6 +3,7 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -40,8 +41,8 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyClBe7iku9tz8lqpf9GXkODDNhBwuXZPeE',
+  static FirebaseOptions web = FirebaseOptions(
+    apiKey: dotenv.env['WEB_API_KEY']!,
     appId: '1:210900255490:web:35c5192da8a7551b75781b',
     messagingSenderId: '210900255490',
     projectId: 'rentavehicle-7c66e',
@@ -50,16 +51,16 @@ class DefaultFirebaseOptions {
     measurementId: 'G-50BS8PKH1K',
   );
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBid6UItLKwkR5IWKbuzkatUQHO0qQkLpk',
+  static FirebaseOptions android = FirebaseOptions(
+    apiKey: dotenv.env['ANDROID_API_KEY']!,
     appId: '1:210900255490:android:1a595b98696bb3a275781b',
     messagingSenderId: '210900255490',
     projectId: 'rentavehicle-7c66e',
     storageBucket: 'rentavehicle-7c66e.firebasestorage.app',
   );
 
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyA1FhJThFpyBePSpouJs3OIKpWonCWjzww',
+  static FirebaseOptions ios = FirebaseOptions(
+    apiKey: dotenv.env['IOS_API_KEY']!,
     appId: '1:210900255490:ios:224b0007e1ef39b575781b',
     messagingSenderId: '210900255490',
     projectId: 'rentavehicle-7c66e',
@@ -68,8 +69,8 @@ class DefaultFirebaseOptions {
     iosBundleId: 'com.rentavehicle.apps',
   );
 
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyA1FhJThFpyBePSpouJs3OIKpWonCWjzww',
+  static FirebaseOptions macos = FirebaseOptions(
+    apiKey: dotenv.env['MACOS_API_KEY']!,
     appId: '1:210900255490:ios:224b0007e1ef39b575781b',
     messagingSenderId: '210900255490',
     projectId: 'rentavehicle-7c66e',
@@ -78,8 +79,8 @@ class DefaultFirebaseOptions {
     iosBundleId: 'com.rentavehicle.apps',
   );
 
-  static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyClBe7iku9tz8lqpf9GXkODDNhBwuXZPeE',
+  static FirebaseOptions windows = FirebaseOptions(
+    apiKey: dotenv.env['WINDOWS_API_KEY']!,
     appId: '1:210900255490:web:8ca480402fe9382e75781b',
     messagingSenderId: '210900255490',
     projectId: 'rentavehicle-7c66e',
