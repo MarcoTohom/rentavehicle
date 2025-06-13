@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -12,7 +14,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _passwordController = TextEditingController();
   bool _isLoading = false;
 
-  void _login() {
+  void _login () async {
     final email = _emailController.text.trim();
     final password = _passwordController.text;
 
@@ -25,11 +27,44 @@ class _LoginPageState extends State<LoginPage> {
 
     setState(() => _isLoading = true);
 
-    // Simular proceso de login (reemplaza por lógica real)
-    Future.delayed(const Duration(seconds: 2), () {
+
+    try {
+      // Autenticación con Firebase
+      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      final user = credential.user;
+
+      if (user != null) {
+        // Verificar si el usuario está registrado en Firestore
+        final userDoc = await FirebaseFirestore.instance
+            .collection('users')
+            .where('id', isEqualTo: user.uid)
+            .limit(1)
+            .get();
+
+        if (userDoc.docs.isEmpty) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Usuario no registrado en base de datos')),
+          );
+          setState(() => _isLoading = false);
+          return;
+        }
+
+        Navigator.pushReplacementNamed(context, '/home');
+      }
+    } on FirebaseAuthException catch (e) {
+      String message = 'Error al iniciar sesión';
+      if (e.code == 'user-not-found') {
+        message = 'Usuario no encontrado';
+      } else if (e.code == 'wrong-password') {
+        message = 'Contraseña incorrecta';
+      }
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
       setState(() => _isLoading = false);
-      Navigator.pushReplacementNamed(context, '/home'); // Ruta al dashboard
-    });
+    }
   }
 
   @override
