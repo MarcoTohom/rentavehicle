@@ -111,6 +111,12 @@ class _LoginPageState extends State<LoginPage> {
               },
               child: const Text('¿No tienes cuenta? Regístrate'),
             ),
+            TextButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/recovery');
+              },
+              child: const Text('Recuperar contraseña'),
+            ),
           ],
         ),
       ),
