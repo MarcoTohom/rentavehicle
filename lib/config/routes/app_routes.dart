@@ -1,7 +1,7 @@
-import 'package:apps/feautures/auth/presentation/forgot_password_page.dart';
-import 'package:apps/feautures/auth/presentation/login_page.dart';
-import 'package:apps/feautures/auth/presentation/password_reset_page.dart';
-import 'package:apps/feautures/auth/presentation/register_page.dart';
+import 'package:apps/feautures/auth/forgot_password_page.dart';
+import 'package:apps/feautures/auth/login_page.dart';
+import 'package:apps/feautures/auth/password_reset_page.dart';
+import 'package:apps/feautures/auth/register_page.dart';
 import 'package:apps/feautures/home/home_page.dart';
 import 'package:apps/feautures/home/init_page.dart';
 
