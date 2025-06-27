@@ -46,7 +46,7 @@ class HomePage extends StatelessWidget {
               leading: const Icon(Icons.person),
               title: const Text('Perfil'),
               onTap: () {
-                // Navegar al perfil
+                Navigator.pushNamed(context, '/profile');
               },
             ),
           ],

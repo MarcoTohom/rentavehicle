@@ -4,6 +4,7 @@ import 'package:apps/feautures/auth/password_reset_page.dart';
 import 'package:apps/feautures/auth/register_page.dart';
 import 'package:apps/feautures/home/home_page.dart';
 import 'package:apps/feautures/home/init_page.dart';
+import 'package:apps/feautures/profile/profile_page.dart';
 
 class AppRoutes {
   static final routes = {
@@ -13,5 +14,6 @@ class AppRoutes {
     '/register': (context) => const RegisterPage(),
     '/recovery': (context) => const ForgotPasswordPage(),
     '/reset': (context) => const PasswordResetPage(),
+    '/profile': (context) => const ProfilePage()
   };
 }
