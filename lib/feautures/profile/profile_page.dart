@@ -59,7 +59,7 @@ class ProfilePage extends StatelessWidget {
                 _buildInfoTile('Correo', user.correo),
                 _buildInfoTile('Teléfono', user.telefono),
                 _buildInfoTile('DPI', user.dpi),
-                _buildInfoTile('Contraseña (Hash)', user.contrasenaHash),
+                //_buildInfoTile('Contraseña (Hash)', user.contrasenaHash),
                 const SizedBox(height: 20),
                 ElevatedButton.icon(
                   onPressed: () {
