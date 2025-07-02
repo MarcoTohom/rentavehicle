@@ -34,7 +34,6 @@ class ProfilePage extends StatelessWidget {
             Navigator.pop(context);
           },
         ),
-        // Se omite backgroundColor para que herede del tema
       ),
       body: FutureBuilder<UserModel?>(
         future: _fetchUserProfile(),
@@ -59,15 +58,6 @@ class ProfilePage extends StatelessWidget {
                 _buildInfoTile('Correo', user.correo),
                 _buildInfoTile('Teléfono', user.telefono),
                 _buildInfoTile('DPI', user.dpi),
-                //_buildInfoTile('Contraseña (Hash)', user.contrasenaHash),
-                const SizedBox(height: 20),
-                ElevatedButton.icon(
-                  onPressed: () {
-                    // Acción de editar
-                  },
-                  icon: const Icon(Icons.edit),
-                  label: const Text('Editar perfil'),
-                )
               ],
             ),
           );

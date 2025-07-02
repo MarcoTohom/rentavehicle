@@ -9,6 +9,7 @@ class UserModel {
   final String telefono;
   final String dpi;
   final String contrasenaHash;
+  final String rol; // Nuevo campo
 
   // Constructor para creación (hash en tiempo real)
   UserModel({
@@ -19,6 +20,7 @@ class UserModel {
     required this.telefono,
     required this.dpi,
     required String contrasena,
+    this.rol = 'user', // Valor por defecto si no se especifica
   }) : contrasenaHash = _hashPassword(contrasena);
 
   // Constructor para lectura desde Firestore (ya viene con hash)
@@ -30,6 +32,7 @@ class UserModel {
     required String telefono,
     required String dpi,
     required String contrasenaHash,
+    required String rol,
   }) {
     return UserModel._internal(
       id: id,
@@ -39,6 +42,7 @@ class UserModel {
       telefono: telefono,
       dpi: dpi,
       contrasenaHash: contrasenaHash,
+      rol: rol,
     );
   }
 
@@ -51,6 +55,7 @@ class UserModel {
     required this.telefono,
     required this.dpi,
     required this.contrasenaHash,
+    required this.rol,
   });
 
   static String _hashPassword(String contrasena) {
@@ -68,6 +73,7 @@ class UserModel {
       'telefono': telefono,
       'dpi': dpi,
       'contraseñaHash': contrasenaHash,
+      'rol': rol,
     };
   }
 
@@ -80,6 +86,7 @@ class UserModel {
       telefono: map['telefono'] ?? '',
       dpi: map['dpi'] ?? '',
       contrasenaHash: map['contraseñaHash'] ?? '',
+      rol: map['rol'] ?? 'user',
     );
   }
 }
