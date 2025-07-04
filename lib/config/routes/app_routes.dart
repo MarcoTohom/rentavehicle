@@ -12,7 +12,7 @@ class AppRoutes {
     '/home': (context) => const HomePage(),
     '/login': (context) => const LoginPage(),
     '/register': (context) => const RegisterPage(),
-    '/recovery': (context) => const ForgotPasswordPage(),
+    '/recovery': (context) => ForgotPasswordPage(),
     '/reset': (context) => const PasswordResetPage(),
     '/profile': (context) => const ProfilePage()
   };

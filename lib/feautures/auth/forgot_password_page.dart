@@ -1,8 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class ForgotPasswordPage extends StatefulWidget{
-  const ForgotPasswordPage({super.key});
+class ForgotPasswordPage extends StatefulWidget {
+  final FirebaseAuth auth;
+  ForgotPasswordPage({super.key, FirebaseAuth? auth})
+      : auth = auth ?? FirebaseAuth.instance;
+
   @override
   State<ForgotPasswordPage> createState() => _ForgotPasswordPageState();
 }
@@ -22,8 +25,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage>{
     });
 
     try {
-      await FirebaseAuth.instance
-          .sendPasswordResetEmail(email: _emailController.text.trim());
+      await widget.auth.sendPasswordResetEmail(email: _emailController.text.trim());
 
       setState(() {
         _message =
